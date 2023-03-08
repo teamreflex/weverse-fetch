@@ -1,0 +1,36 @@
+version: '3.7'
+
+name: weverse-fetch
+
+services:
+  postgres:
+    container_name: postgres
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: weverse-fetch
+      POSTGRES_PORT: 5432
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+  bot:
+    container_name: weverse-fetch
+    build: .
+    command: sh -c "npx prisma migrate deploy && npm start"
+    restart: unless-stopped
+    user: node
+    depends_on:
+      - postgres
+    volumes:
+      - ./data:/app/data
+
+networks:
+  default:
+    driver: bridge
+
+volumes:
+  postgres:

@@ -3,7 +3,7 @@ import { buildClient } from "../auth"
 import prisma from "../database"
 import { error, success, warning } from "../logging"
 
-export const addArtist = async (id: number, group: string, name: string, path: string) => {
+export async function addArtist(id: number, group: string, name: string, path: string) {
   await prisma.artist.create({
     data: {
       weverseId: Number(id),
@@ -16,7 +16,7 @@ export const addArtist = async (id: number, group: string, name: string, path: s
   success(`Added ${chalk.bold(group)} ${chalk.bold(name)} to the database`)
 }
 
-export const removeArtist = async (id: number) => {
+export async function removeArtist(id: number) {
   const artist = await prisma.artist.findFirst({
     where: {
       id: Number(id)
@@ -37,7 +37,7 @@ export const removeArtist = async (id: number) => {
   success(`Removed ${chalk.bold(artist.group)} ${chalk.bold(artist.name)} from the database`)
 }
 
-export const listRemoteArtists = async () => {
+export async function listRemoteArtists() {
   const client = buildClient(true)
 
   const artists = []
@@ -59,7 +59,7 @@ export const listRemoteArtists = async () => {
   console.table(artists, ['id', 'groupName', 'name'])
 }
 
-export const listLocalArtists = async () => {
+export async function listLocalArtists() {
   const artists = await prisma.artist.findMany()
   if (artists.length === 0) {
     warning('No artists found in database')

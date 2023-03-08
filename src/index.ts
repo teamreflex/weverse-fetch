@@ -11,6 +11,7 @@ async function main() {
 main()
   .then(async () => {
     await prisma.$disconnect()
+    process.exit(0)
   })
   .catch(async (e) => {
     error(`Disconnected from database due to error: ${e}`)

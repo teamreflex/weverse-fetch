@@ -4,7 +4,7 @@ import prisma from './database'
 import { savePost } from './files'
 import { success } from './logging'
 
-export const registerEvents = (client: WeverseClient): WeverseClient => {
+export function registerEvents(client: WeverseClient): WeverseClient {
   client.on('init', async (ready) => {
     if (ready) {
       success('Client is ready and listening for new events')
